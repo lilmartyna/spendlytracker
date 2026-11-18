@@ -3,6 +3,7 @@ import com.spendlytracker.spendlytracker.entity.Transaction;
 import com.spendlytracker.spendlytracker.service.TransactionService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import jakarta.validation.Valid;
 
 /// handles HTTP requests and returns data
 @RestController

@@ -2,6 +2,7 @@ package com.spendlytracker.spendlytracker.service;
 
 import com.spendlytracker.spendlytracker.entity.Transaction;
 import com.spendlytracker.spendlytracker.repository.TransactionRepository;
+import com.spendlytracker.spendlytracker.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -55,8 +56,10 @@ public class TransactionService {
 
        }
 
-/// return null if transaction doesnt exist
-       return null;
+/// throw an exception if transaction doesn't exist
+       throw new ResourceNotFoundException(
+               "Transaction with ID: " +id + " cannot be found."
+       );
     }
 }
 

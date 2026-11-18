@@ -36,4 +36,13 @@ public class TransactionController {
         transactionService.deleteTransaction(id);
     }
 
+/// updates an existing transaction using its id
+    @PutMapping("/{id}")
+    public Transaction updateTransaction(
+            @PathVariable Long id,
+            @Valid @RequestBody Transaction transaction
+    ){
+        return transactionService.updateTransaction(id, transaction);
+    }
+
 }

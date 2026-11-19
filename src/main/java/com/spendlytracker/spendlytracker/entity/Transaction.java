@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 
 /// represents transaction in spendlytracker
 @Entity
@@ -23,15 +25,16 @@ public class Transaction {
     @DecimalMin(value = "0.01", message = "Transaction amount must be atleast a pence.")
     private BigDecimal amount;
 
-/// stores if transaction is income or an expense | cannot be null
+/// stores if transaction is income or an expense as an enum | cannot be null
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    @NotBlank(message = "Transaction type cannot be left empty.")
-    private String type;
+    private TransactionType type;
 
 /// stores transaction category | cannot be null
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    @NotBlank(message = "Transaction category cannot be left empty.")
-    private String category;
+    @NotNull(message = "Transaction category cannot be left empty.")
+    private TransactionCategories category;
 
 /// stores the date the transaction occured | cannot be null
     @Column(nullable = false)
@@ -67,25 +70,24 @@ public class Transaction {
     }
 
 /// returns transactions type
-    public String getType() {
+    public TransactionType getType() {
 
         return type;
     }
 
 /// sets transactions type
-    public void setType(String type) {
-
+    public void setType(TransactionType type) {
         this.type = type;
     }
 
 /// returns transactions category
-    public String getCategory() {
+    public TransactionCategories getCategory() {
 
         return category;
     }
 
 /// updates transactions amount
-    public void setCategory(String category) {
+    public void setCategory(TransactionCategories category) {
 
         this.category = category;
     }

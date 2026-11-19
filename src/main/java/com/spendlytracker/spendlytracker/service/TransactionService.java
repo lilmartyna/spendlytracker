@@ -6,6 +6,8 @@ import com.spendlytracker.spendlytracker.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
+import com.spendlytracker.spendlytracker.entity.TransactionCategories;
+import com.spendlytracker.spendlytracker.entity.TransactionType;
 
 /// handles logic for transaction operations
 @Service
@@ -21,16 +23,22 @@ public class TransactionService {
 
 /// saves a new transaction to the database | returns saved transaction
     public Transaction saveTransaction(Transaction transaction) {
+
+/// validates that the category matches the transaction type
+        validateTransactionCategory(transaction);
+
         return transactionRepository.save(transaction);
     }
 
 /// retrieves all transactions from the database | returns list containing all transactions
     public List<Transaction> getAllTransactions(){
+
         return transactionRepository.findAll();
     }
 
 /// deletes a transaction using its id
     public void deleteTransaction(Long id){
+
         transactionRepository.deleteById(id);
     }
 
@@ -43,6 +51,9 @@ public class TransactionService {
 /// check if transaction exists
        if (existingTransaction.isPresent()){
            Transaction transaction = existingTransaction.get();
+
+/// validate that the category matches the updated transaction type
+           validateTransactionCategory(updatedTransaction);
 
 /// update transaction fields
        transaction.setAmount(updatedTransaction.getAmount());
@@ -60,6 +71,21 @@ public class TransactionService {
        throw new ResourceNotFoundException(
                "Transaction with ID: " +id + " cannot be found."
        );
+    }
+
+/// checks if a category is valid for the transaction type chosen
+    private void validateTransactionCategory(Transaction transaction){
+/// checks if chosen income category is permitted
+    if(transaction.getType() == TransactionType.INCOME) {
+        if(transaction.getCategory() != TransactionCategories.SALARY &&
+                transaction.getCategory() != TransactionCategories.OTHER){
+
+            throw new IllegalArgumentException(
+                    "Income transactions must use SALARY or OTHER categories!"
+            );
+        }
+    }
+
     }
 }
 

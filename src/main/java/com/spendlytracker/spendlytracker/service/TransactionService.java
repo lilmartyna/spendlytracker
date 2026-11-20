@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import com.spendlytracker.spendlytracker.entity.TransactionCategories;
 import com.spendlytracker.spendlytracker.entity.TransactionType;
+import java.math.BigDecimal;
 
 /// handles logic for transaction operations
 @Service
@@ -87,6 +88,22 @@ public class TransactionService {
     }
 
     }
+
+/// calculates total income from all transactions
+    public BigDecimal getTotalIncome(){
+        return transactionRepository.calculateTotalByType(TransactionType.INCOME);
+    }
+
+/// calculates total expense from all transactions
+    public BigDecimal getTotalExpense(){
+        return transactionRepository.calculateTotalByType(TransactionType.EXPENSE);
+    }
+
+/// calculate the users current balance
+    public BigDecimal getBalance(){
+        return getTotalIncome().subtract(getTotalExpense());
+    }
+
 }
 
 
